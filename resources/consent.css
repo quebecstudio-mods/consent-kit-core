@@ -1,0 +1,994 @@
+/*
+ * quebecstudio-mods/consent-kit-core — default styles
+ *
+ * Rules read `.qsm-ck :where(.qsm-ck-x)` (0-1-0): high enough to survive framework
+ * resets, low enough that `.qsm-ck .qsm-ck-button { … }` (0-2-0) overrides them. No
+ * @layer — an unlayered site rule would beat a layered one regardless.
+ *
+ * Variable defaults sit at 0-0-0, so any rule on `qsm-consent-kit` wins. The dark
+ * scheme's palette mapping is the exception, at 0-1-1.
+ *
+ * Lengths are multiples of `--qsm-ck-scale`, so a theme rewriting the root font
+ * size cannot shrink the component.
+ *
+ * Focus rings carry `!important`, the only answer to a host suppressing
+ * outlines. Restyle them through `--qsm-ck-focus-ring`, not by redeclaring.
+ *
+ * See docs/styling.md.
+ */
+
+/* Hidden until defined, so a failed script leaves the page clean. */
+qsm-consent-kit:not(:defined) {
+    display: none;
+}
+
+/* `allow-discrete` animates the exit, `@starting-style` the entry. */
+.qsm-ck :where(.qsm-ck-root),
+.qsm-ck :where(.qsm-ck-reopen) {
+    display: none;
+    opacity: 0;
+    translate: 0 100%;
+    transition:
+        opacity 0.25s ease-out,
+        translate 0.25s ease-out,
+        display 0.25s allow-discrete;
+}
+
+.qsm-ck[data-state='banner'] .qsm-ck-root {
+    display: block;
+    opacity: 1;
+    translate: 0 0;
+}
+
+.qsm-ck[data-state='idle'] .qsm-ck-reopen {
+    display: inline-flex;
+    opacity: var(--qsm-ck-reopen-opacity);
+    translate: 0 0;
+}
+
+@starting-style {
+    .qsm-ck[data-state='banner'] .qsm-ck-root {
+        opacity: 0;
+        translate: 0 100%;
+    }
+
+    .qsm-ck[data-state='idle'] .qsm-ck-reopen {
+        opacity: 0;
+        translate: 0 100%;
+    }
+}
+
+/* On the host, never on a descendant: declaring them on `.qsm-ck` would put site
+   overrides out of reach. */
+:where(qsm-consent-kit) {
+    --qsm-ck-bg: #ffffff;
+    --qsm-ck-fg: #000000;
+    --qsm-ck-accent: #000000;
+    --qsm-ck-accent-fg: #ffffff;
+    --qsm-ck-rule: rgb(0 0 0 / 0.15);
+    --qsm-ck-hover: rgb(0 0 0 / 0.06);
+
+    /* The anchor. Floor and ceiling survive a theme rewriting the root font size. */
+    --qsm-ck-scale: clamp(14px, 1rem, 1.5rem);
+
+    --qsm-ck-font: system-ui, sans-serif;
+    --qsm-ck-size: calc(var(--qsm-ck-scale) * 0.9375);
+    --qsm-ck-radius: 0;
+    --qsm-ck-border: 1px solid var(--qsm-ck-accent);
+    --qsm-ck-focus-ring: 2px solid var(--qsm-ck-accent);
+    --qsm-ck-max-width: calc(var(--qsm-ck-scale) * 72);
+    --qsm-ck-gap: var(--qsm-ck-scale);
+
+    /* The box of `floating` and `corner-*`. Its radius is capped, so a pill
+       theme rounds the buttons, not the whole banner. */
+    --qsm-ck-box-width: calc(var(--qsm-ck-scale) * 26);
+    --qsm-ck-box-radius: min(var(--qsm-ck-radius), calc(var(--qsm-ck-scale) * 0.75));
+    --qsm-ck-offset: calc(var(--qsm-ck-scale) * 1.5);
+    --qsm-ck-max-height: 85dvh;
+    --qsm-ck-shadow: 0 -4px 24px rgb(0 0 0 / 0.18);
+    --qsm-ck-z: 2147483000;
+
+    /* Everything below derives from the six above. See docs/styling.md. */
+
+    --qsm-ck-link-color: var(--qsm-ck-accent);
+    --qsm-ck-link-hover-color: var(--qsm-ck-link-color);
+
+    --qsm-ck-button-bg: var(--qsm-ck-accent);
+    --qsm-ck-button-fg: var(--qsm-ck-accent-fg);
+    --qsm-ck-button-border: var(--qsm-ck-border);
+    --qsm-ck-button-radius: var(--qsm-ck-radius);
+    --qsm-ck-button-hover-bg: var(--qsm-ck-bg);
+    --qsm-ck-button-hover-fg: var(--qsm-ck-accent);
+    --qsm-ck-button-hover-border: var(--qsm-ck-button-border);
+
+    --qsm-ck-choice-bg: var(--qsm-ck-button-bg);
+    --qsm-ck-choice-fg: var(--qsm-ck-button-fg);
+    --qsm-ck-choice-border: var(--qsm-ck-button-border);
+    --qsm-ck-choice-radius: var(--qsm-ck-button-radius);
+    --qsm-ck-choice-hover-bg: var(--qsm-ck-button-hover-bg);
+    --qsm-ck-choice-hover-fg: var(--qsm-ck-button-hover-fg);
+    --qsm-ck-choice-hover-border: var(--qsm-ck-button-hover-border);
+
+    --qsm-ck-button-manage-bg: transparent;
+    --qsm-ck-button-manage-fg: var(--qsm-ck-accent);
+    --qsm-ck-button-manage-hover-bg: var(--qsm-ck-hover);
+    --qsm-ck-button-manage-hover-fg: var(--qsm-ck-button-manage-fg);
+
+    --qsm-ck-checkbox-color: var(--qsm-ck-accent);
+    --qsm-ck-checkbox-size: calc(var(--qsm-ck-scale) * 1.125);
+
+    --qsm-ck-banner-bg: var(--qsm-ck-bg);
+    --qsm-ck-dialog-bg: var(--qsm-ck-bg);
+
+    --qsm-ck-body-size: inherit;
+    --qsm-ck-button-size: inherit;
+    --qsm-ck-button-weight: 600;
+
+    --qsm-ck-title-color: var(--qsm-ck-fg);
+    --qsm-ck-title-weight: 700;
+
+    --qsm-ck-banner-title-size: var(--qsm-ck-title-size, calc(var(--qsm-ck-scale) * 1.0625));
+    --qsm-ck-banner-title-color: var(--qsm-ck-title-color);
+    --qsm-ck-banner-title-weight: var(--qsm-ck-title-weight);
+
+    --qsm-ck-dialog-title-size: var(--qsm-ck-title-size, calc(var(--qsm-ck-scale) * 1.125));
+    --qsm-ck-dialog-title-color: var(--qsm-ck-title-color);
+    --qsm-ck-dialog-title-weight: var(--qsm-ck-title-weight);
+
+    --qsm-ck-banner-padding: calc(var(--qsm-ck-gap) * 1.25);
+    --qsm-ck-categories-padding: calc(var(--qsm-ck-gap) * 1.25);
+    --qsm-ck-categories-gap: calc(var(--qsm-ck-gap) * 1.5);
+    --qsm-ck-dialog-actions-padding: calc(var(--qsm-ck-gap) * 1.25);
+    --qsm-ck-button-padding: calc(var(--qsm-ck-scale) * 0.5) calc(var(--qsm-ck-scale) * 1.5);
+    --qsm-ck-actions-gap: calc(var(--qsm-ck-gap) * 0.5);
+
+    --qsm-ck-reopen-bg: var(--qsm-ck-bg);
+    --qsm-ck-reopen-fg: var(--qsm-ck-fg);
+    --qsm-ck-reopen-size: calc(var(--qsm-ck-scale) * 0.75);
+    --qsm-ck-reopen-padding: calc(var(--qsm-ck-scale) * 0.3125) calc(var(--qsm-ck-scale) * 0.75);
+    --qsm-ck-reopen-opacity: 0.55;
+    --qsm-ck-always-size: calc(var(--qsm-ck-scale) * 0.75);
+    --qsm-ck-details-size: calc(var(--qsm-ck-scale) * 0.8125);
+    --qsm-ck-table-size: calc(var(--qsm-ck-scale) * 0.8125);
+    --qsm-ck-table-code-size: calc(var(--qsm-ck-scale) * 0.75);
+
+    --qsm-ck-video-title-size: calc(var(--qsm-ck-scale) * 1);
+    --qsm-ck-video-cta-size: calc(var(--qsm-ck-scale) * 0.9375);
+    --qsm-ck-video-notice-size: calc(var(--qsm-ck-scale) * 0.75);
+
+    --qsm-ck-head-align: center;
+    --qsm-ck-head-padding-block: calc(var(--qsm-ck-gap) * 0.625);
+    --qsm-ck-head-padding-inline: var(--qsm-ck-categories-padding);
+    --qsm-ck-head-padding: var(--qsm-ck-head-padding-block) var(--qsm-ck-head-padding-inline);
+
+    --qsm-ck-close-bg: transparent;
+    --qsm-ck-close-fg: var(--qsm-ck-fg);
+    --qsm-ck-close-radius: var(--qsm-ck-radius);
+    --qsm-ck-close-hover-bg: var(--qsm-ck-hover);
+    --qsm-ck-close-hover-fg: var(--qsm-ck-close-fg);
+
+    /* Cross drawn instead of the glyph when given a size; see docs/styling.md. */
+    --qsm-ck-close-glyph-size: 0;
+    --qsm-ck-close-cross-size: calc(var(--qsm-ck-scale) * 0.875);
+    --qsm-ck-close-cross-thickness: 2px;
+
+    --qsm-ck-transition: 0s;
+
+    /* Neither end is pure: white on black haloes. Contrast 16.12:1. */
+    --qsm-ck-dark-bg: #18181b;
+    --qsm-ck-dark-fg: #f4f4f5;
+    --qsm-ck-dark-accent: #f4f4f5;
+    --qsm-ck-dark-accent-fg: #18181b;
+    --qsm-ck-dark-rule: rgb(244 244 245 / 0.15);
+    --qsm-ck-dark-hover: rgb(244 244 245 / 0.12);
+    --qsm-ck-dark-shadow: 0 -4px 24px rgb(0 0 0 / 0.4);
+
+    color-scheme: light;
+}
+
+/*
+ * Not under :where(), so that a site's `qsm-consent-kit { --qsm-ck-bg: … }` cannot mask
+ * the dark palette: a dark scheme is set through `--qsm-ck-dark-*`. `color-scheme`
+ * too: without it the native checkbox stays light on dark.
+ */
+qsm-consent-kit[data-scheme='dark'] {
+    --qsm-ck-bg: var(--qsm-ck-dark-bg);
+    --qsm-ck-fg: var(--qsm-ck-dark-fg);
+    --qsm-ck-accent: var(--qsm-ck-dark-accent);
+    --qsm-ck-accent-fg: var(--qsm-ck-dark-accent-fg);
+    --qsm-ck-rule: var(--qsm-ck-dark-rule);
+    --qsm-ck-hover: var(--qsm-ck-dark-hover);
+    --qsm-ck-shadow: var(--qsm-ck-dark-shadow);
+
+    color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+    qsm-consent-kit[data-scheme='auto'] {
+        --qsm-ck-bg: var(--qsm-ck-dark-bg);
+        --qsm-ck-fg: var(--qsm-ck-dark-fg);
+        --qsm-ck-accent: var(--qsm-ck-dark-accent);
+        --qsm-ck-accent-fg: var(--qsm-ck-dark-accent-fg);
+        --qsm-ck-rule: var(--qsm-ck-dark-rule);
+        --qsm-ck-hover: var(--qsm-ck-dark-hover);
+        --qsm-ck-shadow: var(--qsm-ck-dark-shadow);
+
+        color-scheme: dark;
+    }
+}
+
+.qsm-ck {
+    display: block;
+}
+
+/* Themes ship `section { background: #fff }`, which lands over the banner: our
+   containers claim no background, so there is nothing to outrank. Hence this
+   reset. Controls are excluded — their own rules set what they need. */
+.qsm-ck :where(section, article, aside, div, header, footer,
+    p, h1, h2, h3, h4, h5, h6,
+    ul, ol, li, dl, dt, dd,
+    label, span, fieldset, legend,
+    table, thead, tbody, tr, th, td) {
+    background: transparent;
+}
+
+.qsm-ck :where(.qsm-ck-root) {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: var(--qsm-ck-z);
+    background: var(--qsm-ck-banner-bg);
+    color: var(--qsm-ck-fg);
+    font-family: var(--qsm-ck-font);
+    font-size: var(--qsm-ck-size);
+    box-shadow: var(--qsm-ck-shadow);
+}
+
+/*
+ * Safe areas. A gesture bar swallows taps along the bottom edge, and the lowest
+ * button is the one that loses part of its target — on a component whose
+ * compliance rests on declining being as easy as accepting.
+ *
+ * `env()` is `0px` without a safe area, and on any site whose viewport meta
+ * omits `viewport-fit=cover`, so `max()` changes nothing elsewhere. Hence also
+ * why `--qsm-ck-banner-padding` has to stay a single length. See docs/styling.md.
+ */
+.qsm-ck :where(.qsm-ck-banner) {
+    box-sizing: border-box;
+    max-width: var(--qsm-ck-max-width);
+    margin: 0 auto;
+    padding: var(--qsm-ck-banner-padding);
+    padding-bottom: max(var(--qsm-ck-banner-padding), env(safe-area-inset-bottom));
+    padding-left: max(var(--qsm-ck-banner-padding), env(safe-area-inset-left));
+    padding-right: max(var(--qsm-ck-banner-padding), env(safe-area-inset-right));
+    display: flex;
+    flex-direction: column;
+    gap: var(--qsm-ck-gap);
+}
+
+.qsm-ck :where(.qsm-ck-banner:focus) {
+    outline: none;
+}
+
+/* Every property a global `h2` rule might set is reset explicitly. */
+.qsm-ck :where(.qsm-ck-title) {
+    margin: 0;
+    padding: 0;
+    font-family: inherit;
+    font-size: var(--qsm-ck-banner-title-size);
+    font-weight: var(--qsm-ck-banner-title-weight);
+    line-height: 1.3;
+    letter-spacing: normal;
+    text-transform: none;
+    color: var(--qsm-ck-banner-title-color);
+}
+
+.qsm-ck :where(.qsm-ck-body) {
+    margin: 0;
+    padding: 0;
+    max-width: 68ch;
+    font-size: var(--qsm-ck-body-size);
+    line-height: 1.5;
+    color: var(--qsm-ck-fg);
+}
+
+.qsm-ck :where(.qsm-ck-link) {
+    color: var(--qsm-ck-link-color);
+    text-decoration: underline;
+    transition: color var(--qsm-ck-transition);
+}
+
+.qsm-ck :where(.qsm-ck-link:hover) {
+    color: var(--qsm-ck-link-hover-color);
+}
+
+/* Stacked, so accept and decline get exactly the same width. */
+.qsm-ck :where(.qsm-ck-actions) {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--qsm-ck-actions-gap);
+    min-width: calc(var(--qsm-ck-scale) * 14);
+}
+
+/* Accept and decline share this rule: equal weight by construction. */
+.qsm-ck :where(.qsm-ck-button) {
+    appearance: none;
+    -webkit-appearance: none;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: max(44px, calc(var(--qsm-ck-scale) * 2.75));
+    margin: 0;
+    padding: var(--qsm-ck-button-padding);
+    border: var(--qsm-ck-button-border);
+    border-radius: var(--qsm-ck-button-radius);
+    background: var(--qsm-ck-button-bg);
+    color: var(--qsm-ck-button-fg);
+    font-family: inherit;
+    font-size: var(--qsm-ck-button-size);
+    font-weight: var(--qsm-ck-button-weight);
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    text-transform: none;
+    cursor: pointer;
+    transition: color var(--qsm-ck-transition), background-color var(--qsm-ck-transition),
+        border-color var(--qsm-ck-transition);
+}
+
+.qsm-ck :where(.qsm-ck-button:hover) {
+    border: var(--qsm-ck-button-hover-border);
+    background: var(--qsm-ck-button-hover-bg);
+    color: var(--qsm-ck-button-hover-fg);
+}
+
+.qsm-ck :where(.qsm-ck-button:focus-visible) {
+    outline: var(--qsm-ck-focus-ring) !important;
+    outline-offset: 2px;
+}
+
+/* Accept and decline only: one rule, so their weight stays equal. */
+.qsm-ck :where(.qsm-ck-button--choice) {
+    border: var(--qsm-ck-choice-border);
+    border-radius: var(--qsm-ck-choice-radius);
+    background: var(--qsm-ck-choice-bg);
+    color: var(--qsm-ck-choice-fg);
+}
+
+.qsm-ck :where(.qsm-ck-button--choice:hover) {
+    border: var(--qsm-ck-choice-hover-border);
+    background: var(--qsm-ck-choice-hover-bg);
+    color: var(--qsm-ck-choice-hover-fg);
+}
+
+/* Visually secondary, but still a full button: same hit area, same focus ring. */
+.qsm-ck :where(.qsm-ck-button--manage) {
+    border-color: transparent;
+    padding-inline: calc(var(--qsm-ck-scale) * 0.75);
+    background: var(--qsm-ck-button-manage-bg);
+    color: var(--qsm-ck-button-manage-fg);
+    font-weight: 400;
+    text-decoration: underline;
+}
+
+.qsm-ck :where(.qsm-ck-button--manage:hover) {
+    border-color: transparent;
+    background: var(--qsm-ck-button-manage-hover-bg);
+    color: var(--qsm-ck-button-manage-hover-fg);
+}
+
+.qsm-ck :where(.qsm-ck-panel[hidden]) {
+    display: none;
+}
+
+/* Screen-reader announcements: `display: none` would silence them. */
+.qsm-ck :where(.qsm-ck-status) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+@media (min-width: 56rem) {
+    .qsm-ck :where(.qsm-ck-banner) {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: calc(var(--qsm-ck-gap) * 2);
+    }
+
+    .qsm-ck .qsm-ck-text {
+        flex: 1;
+    }
+
+    .qsm-ck :where(.qsm-ck-actions) {
+        flex-shrink: 0;
+    }
+}
+
+/*
+ * Display modes, set by `displayMode` on the host. Always fixed and at the
+ * bottom: a banner must be seen without scrolling. Under 40rem every mode is
+ * the full-width banner — a box of 340px on a 375px screen is not a corner.
+ */
+@media (min-width: 40rem) {
+    :where(qsm-consent-kit[data-display='floating'], qsm-consent-kit[data-display^='corner-']) .qsm-ck :where(.qsm-ck-root) {
+        bottom: calc(var(--qsm-ck-offset) + env(safe-area-inset-bottom));
+        border-radius: var(--qsm-ck-box-radius);
+    }
+
+    /* The offset already clears the safe areas. */
+    :where(qsm-consent-kit[data-display='floating'], qsm-consent-kit[data-display^='corner-']) .qsm-ck :where(.qsm-ck-banner) {
+        padding: var(--qsm-ck-banner-padding);
+    }
+
+    :where(qsm-consent-kit[data-display='floating']) .qsm-ck :where(.qsm-ck-root) {
+        inset-inline: calc(var(--qsm-ck-offset) + env(safe-area-inset-left)) calc(var(--qsm-ck-offset) + env(safe-area-inset-right));
+        max-width: var(--qsm-ck-max-width);
+        margin-inline: auto;
+    }
+
+    :where(qsm-consent-kit[data-display^='corner-']) .qsm-ck :where(.qsm-ck-root) {
+        width: min(var(--qsm-ck-box-width), 100% - 2 * var(--qsm-ck-offset));
+    }
+
+    :where(qsm-consent-kit[data-display='corner-left']) .qsm-ck :where(.qsm-ck-root) {
+        inset-inline: calc(var(--qsm-ck-offset) + env(safe-area-inset-left)) auto;
+    }
+
+    :where(qsm-consent-kit[data-display='corner-right']) .qsm-ck :where(.qsm-ck-root) {
+        inset-inline: auto calc(var(--qsm-ck-offset) + env(safe-area-inset-right));
+    }
+
+    /* A box is too narrow for text and actions side by side. */
+    :where(qsm-consent-kit[data-display^='corner-']) .qsm-ck :where(.qsm-ck-banner) {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--qsm-ck-gap);
+    }
+}
+
+
+.qsm-ck :where(.qsm-ck-text) {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--qsm-ck-gap) * 0.4);
+}
+
+/* Reopen tab: discreet, but always reachable and keyboard focusable. Glued to
+   the bottom edge, growing downwards so its label clears the gesture bar. */
+.qsm-ck :where(.qsm-ck-reopen) {
+    position: fixed;
+    left: calc(var(--qsm-ck-reopen-offset, calc(var(--qsm-ck-scale) * 1.5)) + env(safe-area-inset-left));
+    bottom: 0;
+    z-index: var(--qsm-ck-z);
+    box-sizing: border-box;
+    align-items: center;
+    margin: 0;
+    padding: var(--qsm-ck-reopen-padding);
+    padding-bottom: max(calc(var(--qsm-ck-scale) * 0.3125), env(safe-area-inset-bottom));
+    border: 0;
+    border-radius: var(--qsm-ck-radius) var(--qsm-ck-radius) 0 0;
+    background: var(--qsm-ck-reopen-bg);
+    color: var(--qsm-ck-reopen-fg);
+    font-family: var(--qsm-ck-font);
+    font-size: var(--qsm-ck-reopen-size);
+    line-height: 1.4;
+    letter-spacing: 0.01em;
+    box-shadow: 0 -1px 8px rgb(0 0 0 / 0.15);
+    cursor: pointer;
+}
+
+/* `reopenPosition`; the resolver turns `auto` into a side. */
+:where(qsm-consent-kit[data-reopen='right']) .qsm-ck :where(.qsm-ck-reopen) {
+    left: auto;
+    right: calc(var(--qsm-ck-reopen-offset, calc(var(--qsm-ck-scale) * 1.5)) + env(safe-area-inset-right));
+}
+
+.qsm-ck :where(.qsm-ck-reopen:hover) {
+    opacity: 1;
+}
+
+.qsm-ck :where(.qsm-ck-reopen:focus-visible) {
+    opacity: 1;
+    outline: var(--qsm-ck-focus-ring) !important;
+    outline-offset: -2px;
+}
+
+/* Manage panel. A native <dialog> renders in the top layer, so no z-index
+   has to be negotiated with the site. */
+.qsm-ck :where(.qsm-ck-dialog) {
+    box-sizing: border-box;
+    width: min(calc(var(--qsm-ck-scale) * 46), 100%);
+    max-width: 100%;
+    max-height: var(--qsm-ck-max-height);
+    margin: auto auto 0 auto;
+    padding: 0;
+
+    /* Full width here, so a notch in landscape would cut into the close
+       button. The background still reaches the edge; only the content moves. */
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    border: 0;
+    border-radius: var(--qsm-ck-radius) var(--qsm-ck-radius) 0 0;
+    background: var(--qsm-ck-dialog-bg);
+    color: var(--qsm-ck-fg);
+    font-family: var(--qsm-ck-font);
+    font-size: var(--qsm-ck-size);
+    overflow: hidden;
+}
+
+.qsm-ck :where(.qsm-ck-dialog)::backdrop {
+    background: rgb(0 0 0 / 0.35);
+}
+
+.qsm-ck :where(.qsm-ck-dialog[data-backdrop='blur'])::backdrop {
+    background: rgb(0 0 0 / 0.2);
+    backdrop-filter: blur(6px);
+}
+
+.qsm-ck :where(.qsm-ck-dialog[data-backdrop='dim'])::backdrop {
+    background: rgb(0 0 0 / 0.6);
+    backdrop-filter: none;
+}
+
+.qsm-ck :where(.qsm-ck-dialog[data-backdrop='none'])::backdrop {
+    background: transparent;
+    backdrop-filter: none;
+}
+
+.qsm-ck :where(.qsm-ck-dialog-inner) {
+    display: flex;
+    flex-direction: column;
+    max-height: var(--qsm-ck-max-height);
+}
+
+.qsm-ck :where(.qsm-ck-dialog-head) {
+    display: flex;
+    align-items: var(--qsm-ck-head-align);
+    justify-content: space-between;
+    gap: var(--qsm-ck-gap);
+    padding: var(--qsm-ck-head-padding);
+    border-bottom: 1px solid var(--qsm-ck-rule);
+}
+
+.qsm-ck :where(.qsm-ck-dialog-title) {
+    margin: 0;
+    padding: 0;
+    font-family: inherit;
+    font-size: var(--qsm-ck-dialog-title-size);
+    font-weight: var(--qsm-ck-dialog-title-weight);
+    line-height: 1.3;
+    letter-spacing: normal;
+    text-transform: none;
+    color: var(--qsm-ck-dialog-title-color);
+}
+
+.qsm-ck :where(.qsm-ck-dialog-title:focus) {
+    outline: none;
+}
+
+.qsm-ck :where(.qsm-ck-close) {
+    appearance: none;
+    box-sizing: border-box;
+    position: relative;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: max(44px, calc(var(--qsm-ck-scale) * 2.75));
+    height: max(44px, calc(var(--qsm-ck-scale) * 2.75));
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--qsm-ck-close-radius);
+    background: var(--qsm-ck-close-bg);
+    color: var(--qsm-ck-close-fg);
+    font-family: inherit;
+    font-size: var(--qsm-ck-close-glyph-size);
+    line-height: 1;
+    cursor: pointer;
+    transition: color var(--qsm-ck-transition), background-color var(--qsm-ck-transition);
+}
+
+/* Zero-width strokes are invisible: the glyph stands alone until asked. */
+.qsm-ck :where(.qsm-ck-close)::before,
+.qsm-ck :where(.qsm-ck-close)::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: var(--qsm-ck-close-cross-size);
+    height: var(--qsm-ck-close-cross-thickness);
+    border-radius: calc(var(--qsm-ck-close-cross-thickness) / 2);
+    background: currentColor;
+}
+
+.qsm-ck :where(.qsm-ck-close)::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.qsm-ck :where(.qsm-ck-close)::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.qsm-ck :where(.qsm-ck-close:hover) {
+    background: var(--qsm-ck-close-hover-bg);
+    color: var(--qsm-ck-close-hover-fg);
+}
+
+.qsm-ck :where(.qsm-ck-close:focus-visible) {
+    outline: var(--qsm-ck-focus-ring) !important;
+    outline-offset: -2px;
+}
+
+.qsm-ck :where(.qsm-ck-categories) {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--qsm-ck-categories-padding);
+    display: flex;
+    flex-direction: column;
+    gap: var(--qsm-ck-categories-gap);
+}
+
+.qsm-ck :where(.qsm-ck-category) {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--qsm-ck-gap) * 0.4);
+}
+
+.qsm-ck :where(.qsm-ck-switch) {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--qsm-ck-scale) * 0.625);
+}
+
+.qsm-ck :where(.qsm-ck-checkbox) {
+    flex-shrink: 0;
+    width: var(--qsm-ck-checkbox-size);
+    height: var(--qsm-ck-checkbox-size);
+    margin: 0;
+    accent-color: var(--qsm-ck-checkbox-color);
+    cursor: pointer;
+}
+
+.qsm-ck :where(.qsm-ck-checkbox:disabled) {
+    cursor: default;
+    opacity: 0.6;
+}
+
+.qsm-ck :where(.qsm-ck-checkbox:focus-visible) {
+    outline: var(--qsm-ck-focus-ring) !important;
+    outline-offset: 2px;
+}
+
+.qsm-ck :where(.qsm-ck-switch-label) {
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.qsm-ck :where(.qsm-ck-checkbox:disabled + .qsm-ck-switch-label) {
+    cursor: default;
+}
+
+.qsm-ck :where(.qsm-ck-always) {
+    font-size: var(--qsm-ck-always-size);
+    opacity: 0.7;
+}
+
+.qsm-ck :where(.qsm-ck-category-desc) {
+    margin: 0;
+    padding: 0;
+    max-width: 68ch;
+    line-height: 1.5;
+    opacity: 0.85;
+}
+
+.qsm-ck :where(.qsm-ck-details-toggle) {
+    appearance: none;
+    align-self: flex-start;
+    min-height: 32px;
+    margin: 0;
+    padding: calc(var(--qsm-ck-scale) * 0.25) 0;
+    border: 0;
+    background: transparent;
+    color: var(--qsm-ck-accent);
+    font-family: inherit;
+    font-size: var(--qsm-ck-details-size);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.qsm-ck :where(.qsm-ck-details-toggle:focus-visible) {
+    outline: var(--qsm-ck-focus-ring) !important;
+    outline-offset: 2px;
+}
+
+.qsm-ck :where(.qsm-ck-table) {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--qsm-ck-table-size);
+    text-align: left;
+}
+
+.qsm-ck :where(.qsm-ck-table th),
+.qsm-ck :where(.qsm-ck-table td) {
+    padding: calc(var(--qsm-ck-scale) * 0.5) calc(var(--qsm-ck-scale) * 0.75) calc(var(--qsm-ck-scale) * 0.5) 0;
+    border-bottom: 1px solid var(--qsm-ck-rule);
+    vertical-align: top;
+}
+
+.qsm-ck :where(.qsm-ck-table th) {
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0.7;
+}
+
+.qsm-ck :where(.qsm-ck-table code) {
+    font-family: ui-monospace, monospace;
+    font-size: var(--qsm-ck-table-code-size);
+    word-break: break-all;
+}
+
+/* Bottom-anchored here, so the save button meets the gesture bar. */
+.qsm-ck :where(.qsm-ck-dialog-actions) {
+    padding: var(--qsm-ck-dialog-actions-padding);
+    padding-bottom: max(var(--qsm-ck-dialog-actions-padding), env(safe-area-inset-bottom));
+    border-top: 1px solid var(--qsm-ck-rule);
+}
+
+.qsm-ck :where(.qsm-ck-button--save) {
+    width: 100%;
+}
+
+@media (min-width: 40rem) {
+    .qsm-ck :where(.qsm-ck-dialog) {
+        margin: auto;
+        border-radius: var(--qsm-ck-radius);
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    /* Centred from here on: nothing touches an edge, so the inset would only
+       throw the padding off balance. */
+    .qsm-ck .qsm-ck-dialog-actions {
+        padding-bottom: calc(var(--qsm-ck-gap) * 1.25);
+    }
+}
+
+/* A 0fr → 1fr grid is the reliable way to animate an unknown height:
+   `height: auto` does not animate, and `interpolate-size` is still too new. */
+.qsm-ck :where(.qsm-ck-details) {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.25s ease-out;
+}
+
+.qsm-ck :where(.qsm-ck-details > *) {
+    overflow: hidden;
+    min-height: 0;
+}
+
+.qsm-ck :where(.qsm-ck-details[data-open]) {
+    grid-template-rows: 1fr;
+}
+
+/* Collapsed content stays rendered so it can animate; `inert` takes it out
+   of the keyboard and screen-reader flow. */
+.qsm-ck :where(.qsm-ck-details[inert]) {
+    pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .qsm-ck :where(.qsm-ck-details) {
+        transition: none;
+    }
+}
+
+/* The single child carries the clipping during the animation. */
+.qsm-ck :where(.qsm-ck-details-inner) {
+    overflow: hidden auto;
+    min-height: 0;
+}
+
+.qsm-ck :where(.qsm-ck-details[data-open] .qsm-ck-details-inner) {
+    overflow-x: auto;
+}
+
+/* Animating a <dialog> needs `allow-discrete`: `display` and `overlay` are
+   discrete properties. A browser ignoring these rules just shows the panel. */
+.qsm-ck :where(.qsm-ck-dialog) {
+    opacity: 0;
+    translate: 0 calc(var(--qsm-ck-scale) * 1.5);
+    transition:
+        opacity 0.2s ease-out,
+        translate 0.2s ease-out,
+        overlay 0.2s allow-discrete,
+        display 0.2s allow-discrete;
+}
+
+.qsm-ck :where(.qsm-ck-dialog[open]) {
+    opacity: 1;
+    translate: 0 0;
+}
+
+@starting-style {
+    .qsm-ck :where(.qsm-ck-dialog[open]) {
+        opacity: 0;
+        translate: 0 calc(var(--qsm-ck-scale) * 1.5);
+    }
+}
+
+.qsm-ck :where(.qsm-ck-dialog)::backdrop {
+    opacity: 0;
+    transition:
+        opacity 0.2s ease-out,
+        overlay 0.2s allow-discrete,
+        display 0.2s allow-discrete;
+}
+
+.qsm-ck :where(.qsm-ck-dialog[open])::backdrop {
+    opacity: 1;
+}
+
+@starting-style {
+    .qsm-ck :where(.qsm-ck-dialog[open])::backdrop {
+        opacity: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .qsm-ck :where(.qsm-ck-dialog),
+    .qsm-ck :where(.qsm-ck-dialog)::backdrop {
+        transition: none;
+        translate: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .qsm-ck :where(.qsm-ck-root),
+    .qsm-ck :where(.qsm-ck-reopen) {
+        transition: none;
+        translate: none;
+    }
+}
+
+/* Video facade. In the site content, hence no `.qsm-ck` prefix. The poster is a
+   local gradient: the official thumbnail would leak the IP before consent. */
+.qsm-ck-video {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    width: 100%;
+    overflow: hidden;
+    background: #14161a;
+}
+
+.qsm-ck-video iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.qsm-ck-video-button {
+    appearance: none;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: calc(var(--qsm-ck-scale) * 0.75);
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: calc(var(--qsm-ck-scale) * 1.5);
+    border: 0;
+    background: transparent;
+    color: #ffffff;
+    font: inherit;
+    text-align: center;
+    cursor: pointer;
+}
+
+.qsm-ck-video-poster {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.qsm-ck-video-poster--empty {
+    background: radial-gradient(120% 90% at 50% 0%, #2c3138 0%, #14161a 70%);
+}
+
+/* Only with a poster: the label needs its own contrast, denser at the centre. */
+.qsm-ck-video-scrim {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(100% 80% at 50% 50%, rgb(0 0 0 / 0.5) 0%, rgb(0 0 0 / 0.28) 100%);
+    transition: background 0.15s ease-out;
+}
+
+.qsm-ck-video-button:hover .qsm-ck-video-scrim,
+.qsm-ck-video-button:focus-visible .qsm-ck-video-scrim {
+    background: radial-gradient(100% 80% at 50% 50%, rgb(0 0 0 / 0.34) 0%, rgb(0 0 0 / 0.16) 100%);
+}
+
+.qsm-ck-video-play {
+    position: relative;
+    display: block;
+    opacity: 0.9;
+    transition: opacity 0.15s ease-out, scale 0.15s ease-out;
+}
+
+.qsm-ck-video-button:hover .qsm-ck-video-play,
+.qsm-ck-video-button:focus-visible .qsm-ck-video-play {
+    opacity: 1;
+    scale: 1.06;
+}
+
+.qsm-ck-video-play-bg {
+    fill: #212121;
+    fill-opacity: 0.8;
+}
+
+.qsm-ck-video-play-arrow {
+    fill: #ffffff;
+}
+
+.qsm-ck-video-button:hover .qsm-ck-video-play-bg {
+    fill: #cc0000;
+    fill-opacity: 1;
+}
+
+.qsm-ck-video-text {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--qsm-ck-scale) * 0.25);
+    max-width: 42ch;
+    /* A thumbnail often carries its own titles. The shadow separates our label
+       from whatever sits behind it, and buys back the contrast that lets the
+       scrim stay light enough to show the image. */
+    text-shadow: 0 1px 3px rgb(0 0 0 / 0.85);
+}
+
+.qsm-ck-video-title {
+    font-size: var(--qsm-ck-video-title-size);
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.qsm-ck-video-cta {
+    font-size: var(--qsm-ck-video-cta-size);
+    font-weight: 600;
+}
+
+.qsm-ck-video-notice {
+    font-size: var(--qsm-ck-video-notice-size);
+    line-height: 1.4;
+    opacity: 0.8;
+}
+
+.qsm-ck-video-button:focus-visible {
+    outline: var(--qsm-ck-video-focus-ring, 2px solid #ffffff) !important;
+    outline-offset: -4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .qsm-ck-video-play {
+        transition: none;
+    }
+
+    .qsm-ck-video-button:hover .qsm-ck-video-play,
+    .qsm-ck-video-button:focus-visible .qsm-ck-video-play {
+        scale: none;
+    }
+}

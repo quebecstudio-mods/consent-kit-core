@@ -1,0 +1,12 @@
+{{--
+    Direct embed, used when the facade is turned off: YouTube sets its cookies
+    as soon as the page is displayed, without any prior consent.
+--}}
+<div class="qsm-ck-video qsm-ck-video--embed">
+    <iframe src="https://www.youtube-nocookie.com/embed/{{ $youtubeId }}?rel=0"
+            title="{{ $qsmIframeTitle }}"
+            loading="lazy"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
+</div>

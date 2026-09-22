@@ -1,0 +1,60 @@
+{#
+    Declared inventory, for a page of the site — a privacy policy, usually.
+
+    Unlike the banner, this markup carries **no style of its own**. It lives in
+    the site's own page and has to inherit from it: semantic elements, prefixed
+    classes to hook onto, and whatever classes the site puts on each element.
+
+    Variables:
+      categories    visible categories, each with its cookies
+      texts         wording for the current site
+      classes       site classes, one entry per element, every key present
+      heading       false to leave out the title and description
+      headingLevel  heading level for a category name, 2 to 6
+#}
+
+{% macro classAttr(value) %}{% if value %} class="{{ value }}"{% endif %}{% endmacro %}
+{% import _self as attr %}
+
+<div class="qsm-ck-inventory{% if classes.wrapper %} {{ classes.wrapper }}{% endif %}">
+    {% for category in categories %}
+
+        <section class="qsm-ck-inventory-category{% if classes.section %} {{ classes.section }}{% endif %}"
+                 data-category="{{ category.handle }}">
+            {% if heading %}
+                <h{{ qsmLevel }} class="qsm-ck-inventory-title{% if classes.heading %} {{ classes.heading }}{% endif %}"
+                              id="{{ category.qsmTitleId }}">{{ category.label }}</h{{ qsmLevel }}>
+
+                {% if category.description %}
+                    <p class="qsm-ck-inventory-description{% if classes.description %} {{ classes.description }}{% endif %}">{{ category.description }}</p>
+                {% endif %}
+            {% endif %}
+
+            {# Named by the heading rather than by a <caption>: a caption would
+               repeat, visibly, the title sitting right above it. Without a
+               heading on the page, the name has to travel on the table. #}
+            <table class="qsm-ck-inventory-table{% if classes.table %} {{ classes.table }}{% endif %}"
+                   {% if heading %}aria-labelledby="{{ category.qsmTitleId }}"{% else %}aria-label="{{ category.label }}"{% endif %}>
+                <thead{{ attr.classAttr(classes.thead) }}>
+                    <tr{{ attr.classAttr(classes.tr) }}>
+                        <th scope="col"{{ attr.classAttr(classes.th) }}>{{ texts.colName }}</th>
+                        <th scope="col"{{ attr.classAttr(classes.th) }}>{{ texts.colProvider }}</th>
+                        <th scope="col"{{ attr.classAttr(classes.th) }}>{{ texts.colPurpose }}</th>
+                        <th scope="col"{{ attr.classAttr(classes.th) }}>{{ texts.colDuration }}</th>
+                    </tr>
+                </thead>
+
+                <tbody{{ attr.classAttr(classes.tbody) }}>
+                    {% for cookie in category.cookies %}
+                        <tr{{ attr.classAttr(classes.tr) }}>
+                            <td{{ attr.classAttr(classes.td) }}><code>{{ cookie.name }}</code></td>
+                            <td{{ attr.classAttr(classes.td) }}>{{ cookie.qsmProviderLabel }}</td>
+                            <td{{ attr.classAttr(classes.td) }}>{{ cookie.purpose }}</td>
+                            <td{{ attr.classAttr(classes.td) }}>{{ cookie.duration }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    {% endfor %}
+</div>

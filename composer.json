@@ -1,0 +1,62 @@
+{
+    "name": "quebecstudio-mods/consent-kit-core",
+    "description": "Framework-free core of Cookie Consent Kit: settings resolution, wording, templates and front-end assets, shared by the Craft CMS and Laravel integrations.",
+    "type": "library",
+    "license": "proprietary",
+    "keywords": [
+        "consent",
+        "cookies",
+        "loi25",
+        "gdpr"
+    ],
+    "authors": [
+        {
+            "name": "Québec Studio",
+            "homepage": "https://quebecstudio.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.2",
+        "illuminate/collections": "^10.0 || ^11.0 || ^12.0 || ^13.0",
+        "illuminate/support": "^10.0 || ^11.0 || ^12.0 || ^13.0"
+    },
+    "require-dev": {
+        "illuminate/view": "^10.0 || ^11.0 || ^12.0 || ^13.0",
+        "pestphp/pest": "^3.0 || ^4.0 || ^5.0",
+        "twig/twig": "^3.0",
+        "pestphp/pest-plugin-phpstan": "^5.2",
+        "pestphp/pest-plugin-type-coverage": "^5.0",
+        "laravel/pint": "^1.32",
+        "rector/rector": "^2.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "QuebecStudioMods\\ConsentKit\\Core\\": "src/"
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "scripts": {
+        "test": "@php vendor/bin/pest",
+        "style": "@php vendor/bin/pint --test",
+        "stan": "@php -d memory_limit=512M vendor/bin/phpstan analyse --no-progress",
+        "types": "@php -d memory_limit=512M vendor/bin/pest --type-coverage --compact --min=100",
+        "check": [
+            "@style",
+            "@stan",
+            "@types",
+            "@test"
+        ],
+        "refactor": "@php -d memory_limit=512M vendor/bin/rector process --dry-run"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "1.x-dev"
+        }
+    }
+}

@@ -1,0 +1,61 @@
+{{--
+    Click-to-load video facade. Nothing reaches Google until the visitor
+    clicks; the click is the consent, for that video alone.
+
+    The poster is always served from this domain — either an image the site
+    passes in, or the YouTube thumbnail fetched server-side and cached. Never
+    `i.ytimg.com` directly: that request would carry the visitor's IP address
+    to Google before any consent.
+
+    Variables:
+      youtubeId  video id
+      title      displayed title, optional
+      poster     site-provided poster URL, optional
+      thumbnail  server-fetched poster URL, optional
+      consentCategory  category whose consent loads the video outright, or null
+      texts      wording for the current language
+
+    The category travels as an attribute rather than deciding here: the HTML is
+    the same for every visitor, since caches key on the URI and not on the
+    consent state. JavaScript reads the cookie and lifts the facade.
+--}}
+<div class="qsm-ck-video"
+     data-qsm-ck-video
+     @if ($consentCategory)data-qsm-ck-video-consent="{{ $consentCategory }}"@endif
+     data-qsm-ck-video-id="{{ $youtubeId }}"
+     data-qsm-ck-video-title="{{ $title }}">
+    <button type="button"
+            class="qsm-ck-video-button"
+            data-qsm-ck-action="video"
+            aria-label="{{ $texts['videoLabel'] }}@if ($title) : {{ $title }}@endif">
+
+        {{-- The gradient stays underneath: a poster that fails to load, or
+           resolves to the blank pixel, simply reveals it. No broken-image
+           icon, no JavaScript fallback. --}}
+        <span class="qsm-ck-video-poster qsm-ck-video-poster--empty" aria-hidden="true"></span>
+
+        @if ($qsmPosterUrl)
+            <img class="qsm-ck-video-poster" src="{{ $qsmPosterUrl }}" alt="" loading="lazy">
+
+            {{-- Scrim over the photo, under the text: a real thumbnail can be
+               bright anywhere, and the label has to stay readable. --}}
+            <span class="qsm-ck-video-scrim" aria-hidden="true"></span>
+        @endif
+
+        <span class="qsm-ck-video-play" aria-hidden="true">
+            <svg viewBox="0 0 68 48" width="68" height="48" focusable="false">
+                <path class="qsm-ck-video-play-bg" d="M66.5 7.7a8.6 8.6 0 0 0-6-6C55.3 0 34 0 34 0S12.7 0 7.5 1.6a8.6 8.6 0 0 0-6 6A90 90 0 0 0 0 24a90 90 0 0 0 1.5 16.3 8.6 8.6 0 0 0 6 6C12.7 48 34 48 34 48s21.3 0 26.5-1.6a8.6 8.6 0 0 0 6-6A90 90 0 0 0 68 24a90 90 0 0 0-1.5-16.3z"></path>
+                <path class="qsm-ck-video-play-arrow" d="M45 24 27 14v20z"></path>
+            </svg>
+        </span>
+
+        <span class="qsm-ck-video-text">
+            @if ($title)
+                <span class="qsm-ck-video-title">{{ $title }}</span>
+            @endif
+
+            <span class="qsm-ck-video-cta">{{ $texts['videoPlay'] }}</span>
+            <span class="qsm-ck-video-notice">{{ $texts['videoNotice'] }}</span>
+        </span>
+    </button>
+</div>
