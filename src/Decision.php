@@ -18,6 +18,12 @@ final class Decision
 
     public const OUTCOMES = [self::OUTCOME_ALL, self::OUTCOME_SOME, self::OUTCOME_NONE];
 
+    /** What was pressed, as the reporting script names it. */
+    public const ACTIONS = ['accept-all', 'refuse-all', 'save'];
+
+    /** Where the answer came from. */
+    public const ORIGINS = ['banner', 'dialog', 'gpc'];
+
     /**
      * The answer restated over every offered category, required ones granted.
      * Null when it names a category the site does not offer, which no banner

@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.2.0 - 2026-09-23
+
+### Added
+
+- **`Registry`.** What a consent register is made of, whatever keeps it: the
+  settings it answers to, the columns it can be sorted on, and `cutoff()`, the
+  date beyond which a record has outlived the consent it attests.
+- **`Decision::ACTIONS` and `Decision::ORIGINS`.** What was pressed, and where
+  the answer came from, named once for every integration.
+- **Control panel wording**, English and French, read through `Paths::cpLang()`
+  and `Paths::cpStrings()`. Separate from the banner's: one is read by a
+  visitor, the other by whoever administers the site.
+- **The suite's mark**, `Paths::icon()`: `icon.svg` in `currentColor` for a
+  panel that colours it, `marketplace-icon.svg` in full colour for a listing.
+
 ## 1.1.0 - 2026-09-23
 
 ### Added

@@ -7,6 +7,7 @@ The framework-free part of Cookie Consent Kit, shared by its integrations:
 | Craft CMS 6 | `quebecstudio-mods/craftcms-consent-kit` 6.x |
 | Craft CMS 5 | `quebecstudio-mods/craftcms-consent-kit` 5.x |
 | Laravel | `quebecstudio-mods/laravel-consent-kit` |
+| Statamic 6 | `quebecstudio-mods/statamic-consent-kit` 6.x |
 
 Requires PHP 8.2, `illuminate/collections` and `illuminate/support`. It uses
 no framework: an integration passes it settings and site data, and renders its
