@@ -197,7 +197,7 @@
                 return;
             }
 
-            var action = target.dataset.qsmAction;
+            var action = target.dataset.qsmCkAction;
 
             if (action === 'accept') {
                 self.acceptAll();
@@ -290,7 +290,7 @@
                 return;
             }
 
-            input.checked = self.granted(input.dataset.qsmCategory);
+            input.checked = self.granted(input.dataset.qsmCkCategory);
         });
     };
 
@@ -299,7 +299,7 @@
 
         this.root.querySelectorAll('[data-qsm-ck-category]').forEach(function (input) {
             if (!input.disabled) {
-                categories[input.dataset.qsmCategory] = input.checked;
+                categories[input.dataset.qsmCkCategory] = input.checked;
             }
         });
 
@@ -581,9 +581,9 @@
      * lift removes.
      */
     function loadVideo(wrapper, options) {
-        var id = wrapper.dataset.qsmVideoId;
+        var id = wrapper.dataset.qsmCkVideoId;
 
-        if (!id || wrapper.dataset.qsmVideoLoaded) {
+        if (!id || wrapper.dataset.qsmCkVideoLoaded) {
             return;
         }
 
@@ -592,12 +592,12 @@
 
         frame.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(id) +
             '?rel=0' + (settings.autoplay ? '&autoplay=1' : '');
-        frame.title = wrapper.dataset.qsmVideoTitle || 'YouTube';
+        frame.title = wrapper.dataset.qsmCkVideoTitle || 'YouTube';
         frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
         frame.allowFullscreen = true;
         frame.setAttribute('frameborder', '0');
 
-        wrapper.dataset.qsmVideoLoaded = 'true';
+        wrapper.dataset.qsmCkVideoLoaded = 'true';
         wrapper.replaceChildren(frame);
 
         // Focus follows a click, since the control the visitor activated is
@@ -639,7 +639,7 @@
         }
 
         document.querySelectorAll('[data-qsm-ck-video-consent]').forEach(function (wrapper) {
-            if (state.cat[wrapper.dataset.qsmVideoConsent]) {
+            if (state.cat[wrapper.dataset.qsmCkVideoConsent]) {
                 loadVideo(wrapper, { autoplay: false, focus: false });
             }
         });

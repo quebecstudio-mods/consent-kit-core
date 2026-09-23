@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.0.1 - 2026-09-23
+
+### Fixed
+
+- **The banner did nothing when clicked.** The script read the markup as
+  `data-qsm-action`, `data-qsm-category` and `data-qsm-video-*`, which the
+  templates stopped writing when the front-end surfaces took the `qsm-ck`
+  prefix: accepting, refusing, opening the panel and lifting a video facade all
+  silently did nothing. A test now checks that every attribute the script reads
+  is one the templates write.
+
 ## 1.0.0 - 2026-09-22
 
 - The core of Cookie Consent Kit, in `QuebecStudioMods\ConsentKit\Core`: settings
