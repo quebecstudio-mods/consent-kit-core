@@ -26,6 +26,9 @@ templates.
 | `src/Bootstrap.php` | The inline `<head>` script, with its configuration |
 | `src/Attributes.php` | Optional class attributes for the Blade templates |
 | `src/Paths.php` | Paths of the templates, wording files and assets |
+| `src/Presentation.php` | Fingerprint of what the banner was showing, for a consent register |
+| `src/Decision.php` | A reported answer, read against the categories the site offers |
+| `src/RecordScript.php` | The inline script that reports a decision to a register endpoint |
 | `resources/views/blade/`, `resources/views/twig/` | Shipped templates: `banner`, `cookie-table`, `video-facade`, `video-embed` |
 | `resources/consent.js`, `resources/consent.css` | Front-end assets |
 

@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.1.0 - 2026-09-23
+
+### Added
+
+- **Primitives for a consent register.** `Presentation` fingerprints what the
+  banner was showing — a SHA-256 over canonical JSON, object keys sorted and
+  list order kept — from the configuration the server resolves for itself, so
+  nothing is taken from the request. `Decision` reads a reported answer against
+  the categories a site offers, rejecting one that names a category the site
+  does not have. `RecordScript` builds the inline script that reports a
+  decision over `sendBeacon`.
+- The canonical form is pinned by a test: a published fingerprint is a promise,
+  and it must stay recomputable by a third party.
+- The JavaScript is covered by a Vitest suite, which checks that every
+  attribute the script reads is one the templates write.
+
 ## 1.0.1 - 2026-09-23
 
 ### Fixed
