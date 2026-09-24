@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.5.0 - 2026-09-24
+
+### Added
+
+- Wording for the note a panel shows when the cookie table is styled with
+  Tailwind: Tailwind scans no package, so the classes have to be pointed at.
+
+### Changed
+
+- **The French says “enregistrement” for a record, everywhere.** It said
+  “entrée” in six places and “enregistrement” in two, for the same thing — and
+  “entrée” is what Craft CMS calls a content entry, which is not this.
+- The purge utility is “Purge du registre des consentements” in French, which
+  says which register it empties, as the permissions already did.
+
 ## 1.4.0 - 2026-09-24
 
 ### Added

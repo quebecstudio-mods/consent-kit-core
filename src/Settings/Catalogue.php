@@ -76,7 +76,7 @@ final class Catalogue
             'fields' => [
                 'gpcHidesBanner' => [
                     'label' => 'Skip the banner on a Global Privacy Control refusal',
-                    'help' => 'Some browsers send a signal meaning “I refuse optional cookies”. That refusal is always honoured: optional categories start off, and nothing is set before consent. This setting only decides whether the banner still asks. With the banner skipped, a visitor changes their mind from the reopen tab — so keep that tab on, or provide your own entry point.',
+                    'help' => 'Some browsers send a signal meaning “I refuse optional cookies”. That refusal is always honoured: optional categories start off, and nothing is set before consent. This setting only decides whether the banner still asks. Turn it off to keep telling every visitor what the site uses. With the banner skipped, a visitor changes their mind from the reopen tab — so keep that tab on, or provide your own entry point.',
                     'kind' => 'toggle',
                 ],
                 'reopenButton' => [
@@ -123,7 +123,7 @@ final class Catalogue
             'fields' => [
                 'videoFacade' => [
                     'label' => 'YouTube facade',
-                    'help' => 'YouTube videos load only when the visitor clicks, so nothing reaches Google beforehand — the click is the consent, for that video alone. Only YouTube is covered: videos hosted elsewhere are untouched by this setting. Turning this off embeds YouTube directly, which lets Google set cookies as soon as the page is displayed, without any consent.',
+                    'help' => 'YouTube videos load only when the visitor clicks, so nothing reaches Google beforehand — the click is the consent, for that video alone. Only YouTube is covered: videos hosted elsewhere are untouched by this setting, and each template is responsible for them. Turning this off embeds YouTube directly, which lets Google set cookies as soon as the page is displayed, without any consent.',
                     'kind' => 'toggle',
                 ],
                 'videoThumbnails' => [
