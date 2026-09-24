@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.4.0 - 2026-09-24
+
+### Added
+
+- **`Settings\Catalogue`.** Every setting a control panel offers, described
+  once: its section, the control that edits it, its options and conditions, and
+  the English label and help the wording is keyed by. An integration renders it
+  in its own host's form language. The cookie inventory stays out — a
+  repeatable field has no shape two hosts share.
+- `:tag` joins the declared placeholders, for the help that names a template
+  call: every host spells that call its own way.
+
 ## 1.3.0 - 2026-09-24
 
 ### Added

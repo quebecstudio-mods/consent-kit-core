@@ -16,7 +16,7 @@ final class Wording
      * also rewrite `{{ consent:banner }}`, an Antlers tag that appears in the
      * help text, so only these are touched.
      */
-    public const PLACEHOLDERS = ['count', 'date', 'id', 'n', 'page', 'pages', 'total'];
+    public const PLACEHOLDERS = ['count', 'date', 'id', 'n', 'page', 'pages', 'tag', 'total'];
 
     /**
      * The same strings with `:name` written `{name}`, keys included: a host

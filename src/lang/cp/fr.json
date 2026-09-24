@@ -130,7 +130,7 @@
     "Page :page of :pages": "Page :page sur :pages",
     "Panel backdrop": "Arrière-plan du panneau",
     "Places the banner as the first child of <body>, without touching any template. Turn this off only if the site needs to position it itself. The <head> bootstrap always stays automatic.": "Place la bannière en premier enfant du <body>, sans toucher aux gabarits. À désactiver seulement si le site doit la positionner lui-même. L'amorçage du <head>, lui, reste toujours automatique.",
-    "Places the banner at the end of `<body>`, without touching any template. Turn this off only if the site needs to position it itself, with `{{ consent:banner }}`. The `<head>` bootstrap always stays automatic.": "Place la bannière à la fin de `<body>`, sans toucher à un gabarit. Ne désactivez ceci que si le site doit la positionner lui-même, avec `{{ consent:banner }}`. L’amorce dans `<head>` reste toujours automatique.",
+    "Places the banner at the end of `<body>`, without touching any template. Turn this off only if the site needs to position it itself, with :tag. The `<head>` bootstrap always stays automatic.": "Place la bannière à la fin de `<body>`, sans toucher à un gabarit. Ne désactivez ceci que si le site doit la positionner lui-même, avec :tag. L’amorce dans `<head>` reste toujours automatique.",
     "Policy": "Politique",
     "Policy version": "Version de la politique",
     "Previous": "Précédent",
