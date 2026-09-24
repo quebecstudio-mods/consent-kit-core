@@ -1,5 +1,25 @@
 # Changelog
 
+## 1.3.0 - 2026-09-24
+
+### Added
+
+- **`Wording`.** The control panel strings in the spelling a host asks for:
+  Laravel substitutes `:name`, Craft CMS's own translator `{name}`, and
+  `braces()` converts keys and values between them. The conversion runs off a
+  declared list of placeholders, never a pattern — the wording contains
+  `{{ consent:banner }}`, which a pattern would rewrite.
+
+### Changed
+
+- **One spelling in the wording files.** Six strings were held twice, once per
+  spelling, and two of the pairs had already drifted apart in French.
+- **One casing rule for both panels**, the one Craft CMS and Statamic each
+  follow: title case for labels, titles, headings and column names, sentence
+  case for permissions, buttons, links, options and help text. `en.json` gains
+  the Craft CMS field labels it was missing, and drops the entries that were
+  titling an action.
+
 ## 1.2.0 - 2026-09-23
 
 ### Added
