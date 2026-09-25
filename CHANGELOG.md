@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.5.1 - 2026-09-25
+
+### Fixed
+
+- The note about the Pro edition no longer names the free one. Each host calls
+  it what its store requires — `lite` on the Craft Plugin Store, `standard` on
+  the Statamic Marketplace — so the wording says “the free edition”.
+
 ## 1.5.0 - 2026-09-24
 
 ### Added
